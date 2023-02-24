@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block con %}
+{% load mathfilters %}
+
+
+<style>
+   .interval-cell {
+       width: 80px;
+    }
+
+    .table {
+        text-align: center;
+    }
+</style>
+
+<h1><b>입금요청 리스트</b></h1>
+
+<table class="table table-hover table-bordered border-dark table align-middle mt-4">
+    <thead>
+        <tr class="table-dark">
+            <th scope="col">예약일</th>
+            <th scope="col">골드장</th>
+            <th scope="col">실내장자명</th>
+            <th scope="col">조인인원</th>
+            <th scope="col">입금확인</th>
+        </tr>
+    </thead>
+    <tbody id="table">
+        {% for j in joinlooks %}
+            <tr>
+                <td class="date-format">{{ j.board.date|date:"m/d(D)"}}</td>
+                <th scope="row">{{ j.board.gn }}</td>
+                <td>{{ j.board.bname }}</td>
+                <td>{{ j.join_count }}</td>
+                
+                <td><button onclick="confirmSubmit('{{j.id}}')" class="btn btn-dark">입금확인</button></td>
+            </tr>
+        {% empty %}
+            <tr class="text-center first-empty">
+                <th colspan="1">{% if kw %} 검색결과가 존재하지 않습니다 {% else %} 타임이 존재하지 않습니다 💦 {% endif %}</th>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h1><b>환불요청 리스트</b></h1>
+
+<table class="table table-hover table-bordered border-dark table align-middle mt-4">
+    <thead>
+        <tr class="table-dark">
+            <th scope="col">예약일</th>
+            <th scope="col">골드장</th>
+            <th scope="col">실내장자명</th>
+            <th scope="col">조인인원</th>
+            <th scope="col">입금확인</th>
+        </tr>
+    </thead>
+    <tbody id="table">
+
+        {% for j in refundJoinlooks %}
+            <tr>
+                <td class="date-format">{{ j.board.date|date:"m/d(D)"}}</td>
+                <th scope="row">{{ j.board.gn }}</td>
+                <td>{{ j.board.bname }}</td>
+                <td>{{ j.join_count }}</td>
+                
+                <td><button onclick="refundSubmit('{{j.id}}')" class="btn btn-dark">환불확인</button></td>
+            </tr>
+        {% empty %}
+            <tr class="text-center second-empty">
+                <th colspan="1">{% if kw %} 검색결과가 존재하지 않습니다 {% else %} 타임이 존재하지 않습니다 💦 {% endif %}</th>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+
+
+    for (i=0;i<document.getElementsByClassName('date-format').length;i++) {
+        let x = document.getElementsByClassName("date-format")[i];
+        x.innerText=x.innerText.substr(0, 7) + x.innerText.substr(9, 9); 
+    }
+
+
+    function confirmSubmit(joinookId) {
+        $.ajax({
+            url: "{% url 'board:confirmDeposit' %}",
+            type:'POST',
+            data:{'joinookId':joinookId,csrfmiddlewaretoken: '{{ csrf_token }}'},
+            success:function(response){
+                alert("입금확인이 완료되었습니다.") //등록 알림
+                location.reload();
+            },
+            error:function(response){
+            }
+        });
+    
+	}
+
+    function refundSubmit(joinookId) {
+        $.ajax({
+            url: "{% url 'board:confirmRefund' %}",
+            type:'POST',
+            data:{'joinookId':joinookId,csrfmiddlewaretoken: '{{ csrf_token }}'},
+            success:function(response){
+                alert("환불이 완료되었습니다.") //등록 알림
+                location.reload();
+            },
+            error:function(response){
+            }
+        });
+    
+	}
+
+</script>
+{% endblock %}

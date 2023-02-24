@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+{% block con %}
+
+    <h1><b>타임 작성</b></h1>
+
+    <form class="row g-2 my-2" action="#" method="POST">
+        {% csrf_token %}
+        <div class="col-sm-12">
+        <label class="form-label">작성자</label>
+        <input class="form-control" value="{{ user }}" style="width:100px;" disabled>
+        </div>
+        <div class="col-sm-5">
+            <label for="inputrg" class="form-label">지역</label>
+            <label for="inputrg" class="form-label" id="ssac_label"></label>
+            <script type="text/javascript">
+                function select_gu(obj) {
+                    if (obj.value == "경기북부") {
+                        document.getElementById("inputgn").innerHTML = `
+                            <option value="none"selected disabled>선택하세요</option>
+                            <option value='노스팜'>노스팜</option>
+                            <option value='몽베르'>몽베르</option>
+                            <option value='서원힐스'>서원힐스</option>
+                            <option value='스마트KU'>스마트KU</option>
+                            <option value='썬힐'>썬힐</option>
+                            <option value='자유로'>자유로</option>
+                            <option value='타이거'>타이거</option>
+                            <option value='파주'>파주</option>
+                            <option value='포천힐스'>포천힐스</option>
+                            <option value='필로스'>필로스</option>
+                        `;
+                    }
+                    else if (obj.value == "경기남부") {
+                        document.getElementById("inputgn").innerHTML = `
+                            <option value="none"selected disabled>선택하세요</option>
+                            <option value='골드'>골드</option>
+                            <option value='그린힐'>그린힐</option>
+                            <option value='더크로스비'>더크로스비</option>
+                            <option value='루나힐스'>루나힐스</option>
+                            <option value='리앤리'>리앤리</option>
+                            <option value='마에스트로'>마에스트로</option>
+                            <option value='비에이비스타'>비에이비스타</option>
+                            <option value='신라'>신라</option>
+                            <option value='아세코밸리'>아세코밸리</option>
+                            <option value='안성H'>안성H</option>
+                            <option value='안성W'>안성W</option>
+                            <option value='에덴블루'>에덴블루</option>
+                            <option value='이천실크밸리'>이천실크밸리</option>
+                            <option value='캐슬파인'>캐슬파인</option>
+                            <option value='코리아'>코리아</option>
+                            <option value='코리아(P)'>코리아(P)</option>
+                            <option value='한림용인'>한림용인</option>
+                            <option value='해솔리아'>해솔리아</option>
+                        `;
+                    }
+                    else if (obj.value == "충청도") {
+                        document.getElementById("inputgn").innerHTML = `
+                            <option value="none"selected disabled>선택하세요</option>
+                            <option value='대영베이스'>대영베이스</option>
+                            <option value='대영힐스'>대영힐스</option>
+                            <option value='떼제베'>떼제베</option>
+                            <option value='로얄포레'>로얄포레</option>
+                            <option value='올데이'>올데이</option>
+                            <option value='임페리얼레이크'>임페리얼레이크</option>
+                            <option value='진천'>진천</option>
+                        `;
+                    }
+                    else if (obj.value == "강원도") {
+                        document.getElementById("inputgn").innerHTML = `
+                            <option value="none"selected disabled>선택하세요</option>
+                            <option value='벨라스톤'>벨라스톤</option>
+                            <option value='센추리21'>센추리21</option>
+                            <option value='알펜시아'>알펜시아</option>
+                            <option value='클럽모우'>클럽모우</option>
+                            <option value='파가니카'>파가니카</option>
+                        `;
+                    }
+                    else {
+                        document.getElementById("inputgn").innerHTML = `
+                            <option value='none'>아직 안정함</option>
+                         `;
+                    }
+                }
+
+                function select_co(obj) {
+                    if (obj.value == "골드") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='참피온IN'>참피온IN</option>
+                            <option value='참피온OUT'>참피온OUT</option>
+                            <option value='마스타IN'>마스타IN</option>
+                            <option value='마스타OUT'>마스타OUT</option>
+                        `;
+                    }
+                    else if (obj.value == "그린힐") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='IN'>IN</option>
+                            <option value='OUT'>OUT</option>
+                        `;
+                    }
+                    else if (obj.value == "더크로스비") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='아리아'>아리아</option>
+                            <option value='빌리'>빌리</option>
+                            <option value='샬롯'>샬롯</option>
+                        `;
+                    }
+                    else if (obj.value == "루나힐스") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='Oak'>Oak</option>
+                            <option value='Birch'>Birch</option>
+                        `;
+                    }
+                    else if (obj.value == "리앤리") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='레이크'>레이크</option>
+                            <option value='하이랜드'>하이랜드</option>
+                            <option value='스카이'>스카이</option>
+                        `;
+                    }
+                    else if (obj.value == "마에스트로") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='Lake'>Lake</option>
+                            <option value='Vally'>Vally</option>
+                        `;
+                    }
+                    else if (obj.value == "비에이비스타") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='Vista'>Vista</option>
+                            <option value='Monti'>Monti</option>
+                            <option value='Lago'>Lago</option>
+                            <option value='Bella'>Bella</option>
+                            <option value='Hopark'>Hopark</option>
+                            <option value='Buona'>Buona</option>
+                        `;
+                    }
+                    else if (obj.value == "신라") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='서코스'>서코스</option>
+                            <option value='남코스'>남코스</option>
+                            <option value='동코스'>동코스</option>
+                        `;
+                    }
+                    else if (obj.value == "아세코밸리") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='OUT'>OUT</option>
+                        `;
+                    }
+                    else if (obj.value == "안성H") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='Hill'>Hill</option>
+                            <option value='Lake'>Lake</option>
+                        `;
+                    }
+                    else if (obj.value == "안성W") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='IN'>IN</option>
+                            <option value='OUT'>OUT</option>
+                        `;
+                    }
+                    else if (obj.value == "에덴블루") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='레이크'>레이크</option>
+                            <option value='밸리'>밸리</option>
+                            <option value='마운틴'>마운틴</option>
+                        `;
+                    }
+                    else if (obj.value == "이천실크밸리") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='Silk'>Silk</option>
+                            <option value='Lake'>Lake</option>
+                            <option value='Valley'>Valley</option>
+                        `;
+                    }
+                    else if (obj.value == "캐슬파인") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='Valley'>Valley</option>
+                            <option value='Lake'>Lake</option>
+                        `;
+                    }
+                    else if (obj.value == "코리아") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='크리크'>크리크</option>
+                            <option value='레이크'>레이크</option>
+                            <option value='챌린지'>챌린지</option>
+                        `;
+                    }
+                    else if (obj.value == "코리아") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='크리크'>크리크</option>
+                            <option value='레이크'>레이크</option>
+                            <option value='챌린지'>챌린지</option>
+                        `;
+                    }
+                    else if (obj.value == "코리아(P)") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='PUBLIC'>PUBLIC</option>
+                        `;
+                    }
+                    else if (obj.value == "한림용인") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='사파이어'>사파이어</option>
+                            <option value='루비'>루비</option>
+                            <option value='다이아몬드'>다이아몬드</option>
+                        `;
+                    }
+                    else if (obj.value == "해솔리아") {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='HAE'>HAE</option>
+                            <option value='SOL'>SOL</option>
+                            <option value='LIA'>LIA</option>
+                        `;
+                    }
+                    else {
+                        document.getElementById("inputco").innerHTML = `
+                            <option value='none'>아직 안정함</option>
+                         `;
+                    }
+                }
+            </script>
+            <select id="inputrg" class="form-select" name="rg" required onchange="select_gu(this);" style="width:300px;">
+                <option value="none"selected disabled>선택하세요</option>
+                <option value="경기북부">경기북부</option>
+                <option value="경기남부">경기남부</option>
+                <option value="충청도">충청도</option>
+                <option value="강원도">강원도</option>
+            </select>
+        </div>
+        <div class="col-md-7">
+            <label for="inputgn" class="form-label">골프장</label>
+            <select id="inputgn" class="form-select" name="gn" required onchange="select_co(this);" style="width:300px;">
+                <option value="none"selected disabled>선택하세요</option>
+            </select>
+        </div>
+        <div class="col-md-5">
+        <label class="form-label">날짜</label>
+        <br>    
+        <input type="date" id="now_date" class = "form-control" name = "cdate" value="{{object.date|date:'Y-m-d'}}" style="width:300px;">
+        </div>
+        <div class="col-md-7">
+            <label for="inputco" class="form-label">코스</label>
+            <select id="inputco" class="form-select" name="course" placeholder="INPUT COURSE" style="width:300px;">
+                <option value="none">선택하세요</option>
+            </select>
+        </div>
+        <div class="col-md-5">
+            <label class="form-label">시</label>
+            <input class="form-control " name="hour" placeholder="HH"style="width:300px;">
+        </div>
+        <div class="col-md-7">
+            <label class="form-label">분</label>
+            <input class="form-control " name="min" placeholder="MM"style="width:300px;">
+        </div>
+        <div class="col-md-5">
+            <label class="form-label">그린피</label>
+            <input class="form-control " name="pee" placeholder="INPUT PEE" style="width:300px;">
+        </div>
+        <div class="col-md-7">
+            <label class="form-label">예약자명</label>
+            <input class="form-control " name="bname" placeholder="INPUT NAME" style="width:300px;">
+        </div>
+        <div class="col-md-9">
+            <label class="form-label">조건</label>
+            <select class="form-select" name="rq" style="width:300px;">
+                <option value="조건없음">조건없음</option>
+                <option value="부부만">남여만</option>
+                <option value="남여만">부부만</option>
+                <option value="남자만">남자만</option>
+                <option value="여자만">여자만</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">메모</label>
+            <input class="form-control " name="memo" placeholder="INPUT MEMO">
+        </div>
+
+
+    <div class="text-end mt-4">
+        <button class="btn btn-dark">생성하기</button>
+    </div>
+    </form>
+    
+    <script>
+        document.getElementById('now_date').valueAsDate = new Date();
+    </script>
+{% endblock %}

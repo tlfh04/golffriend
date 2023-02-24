@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block con %}
+{% load mathfilters %}
+
+<table border = "1" class="table table-hover table-bordered border-dark table align-middle mt-4">
+    <thead>
+        <tr class="table-dark">
+            <th scope="col">골드장</th>
+            <th scope="col">예약일</th>
+            <th scope="col">코스</th>
+            <th scope="col">타임</th>
+            <th scope="col">예약자명</th>
+            <th scope="col">그린피</th>
+            <th scope="col">조인인원</th>
+            <th scope="col">조건</th>
+            <th scope="col">메모</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <th scope="row">{{ b.gn }}</td>
+                <td>{{ b.date|date:"m/d(D)"}}</td>
+                <td>{{ b.course }}</td>
+                <td>{{ b.hour }}:{{ b.min }}</td>
+                <td>{{ b.bname }}</td>
+                <td>{{ b.pee }}</td>
+                <td>{{b.join}}({{ b.join_count }})</td>
+                <td>{{ b.rq }}</td>
+                <td>{{ b.memo }}</td>
+    </tbody>
+</table>
+<table border = "1" class="table table-hover table-bordered border-dark table align-middle mt-4">
+    <thead>
+        <tr class="">
+            <th>담당자</th>
+            {% for i in r %}
+            <td>{{ i.j_writer }}</td>
+                {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <th>조인현황</th>
+            {% for i in r %}
+            <td>{{ i.j_name }}({{ i.j_tag }}){% if user == i.j_writer %}<form method = "post" action="{%url 'board:cancle' i.id%}">{% csrf_token %}<button class="btn btn-dark">취소</button>{%endif%}</form>
+            {% endfor %}
+            </tr>
+            <tr>
+                <th>연락처</th>
+            {% for i in r %}
+            <td>{{ i.j_count }}</td>
+                {% endfor %}
+            </tr>
+    </tbody>
+</table>
+<form action = "{% url 'board:sell' b.id %}" method="post">
+    {% csrf_token %}
+    <div class="col-md-4">
+        <label class="form-label">실내장자</label>
+        <input class="form-control " name="jname" placeholder="INPUT NAME">
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">연락처</label>
+        <input class="form-control " name="jcall" placeholder="INPUT NAME">
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">조인성별</label>
+        <select class="form-select" name="jtag">
+            <option value="남">남</option>
+            <option value="남남">남남</option>
+            <option value="남남남">남남남</option>
+            <option value="남남여">남남여</option>
+            <option value="여">여</option>
+            <option value="여여">여여</option>
+            <option value="여여여">여여여</option>
+            <option value="여여남">여여남</option>
+            <option value="남여">남여</option>
+            <option value="양도">양도</option>
+
+        </select>
+    </div>
+    <div class="mt-4">
+        <button class="btn btn-dark">생성하기</button>
+    </div>
+
+</form>
+
+{% endblock %}

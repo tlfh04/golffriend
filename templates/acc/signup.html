@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block con %}
+
+    <h1><b>SIGNUP PAGE</b></h1>
+
+    <form method="post" enctype="multipart/form-data" name="createForm">
+        {% csrf_token %}
+        <div class="col-md-4">
+            <label class="form-label mt-5">이름</label>
+            <input type="text" name="uname" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <label class="form-label mt-4">비밀번호</label>
+            <input type="password" name="upass" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <label class="form-label mt-4">비밀번호 확인</label>
+            <input type="password" name="ckpass" class="form-control">
+        </div>
+        <br>
+    <div class="col-md-4">
+        <label class="form-label">직급</label>
+        <select class="form-select" name="urank">
+            <option value="매니저">매니저</option>
+            <option value="대리">대리</option>
+            <option value="실장">실장</option>
+            <option value="팀장">팀장</option>
+            <option value="이사">이사</option>
+            <option value="대표">대표</option>
+
+        </select>
+
+        <div class="text-end mt-4">
+            <button class="btn btn-dark btn-lg" type="button" onclick="check()">회원가입</button>
+        </div>
+    </form>
+
+    <script>
+        function check(){
+            cf = document.createForm;
+            if(!cf.uname.value){
+                alert("USERNAME 을 입력해주세요");
+            }else if(!cf.upass.value){
+                alert("PASSWORD 를 입력해주세요");
+            }else if(cf.upass.value != cf.ckpass.value){
+                alert("PASSWORD 를 확인해주세요 (불일치)");
+            }else{
+                cf.submit();
+            }
+        }
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block con %}
+
+    <h1><b>타임 작성</b></h1>
+
+    <form class="row g-2 my-2" method="post">
+        {% csrf_token %}
+        <div class="col-sm-12">
+        <label class="form-label">작성자</label>
+        <input class="form-control" value="{{ user }}" style="width:100px;" disabled>
+        </div>
+        <div class="col-sm-5">
+            <label for="inputrg" class="form-label">지역</label>
+            <label for="inputrg" class="form-label" id="ssac_label"></label>
+            <script type="text/javascript">
+                function select_gu(obj) {
+                    if (obj.value == "경기북부") {
+                        document.getElementById("inputgn").innerHTML = `
+                            <option value='노스팜'>노스팜</option>
+                            <option value='몽베르'>몽베르</option>
+                            <option value='서원힐스'>서원힐스</option>
+                            <option value='스마트KU'>스마트KU</option>
+                            <option value='썬힐'>썬힐</option>
+                            <option value='자유로'>자유로</option>
+                            <option value='타이거'>타이거</option>
+                            <option value='파주'>파주</option>
+                            <option value='포천힐스'>포천힐스</option>
+                            <option value='필로스'>필로스</option>
+                        `;
+                    }
+                    else if (obj.value == "경기남부") {
+                        document.getElementById("inputgn").innerHTML = `
+                            <option value='골드'>골드</option>
+                            <option value='그린힐'>그린힐</option>
+                            <option value='더크로스비'>더크로스비</option>
+                            <option value='루나힐스'>루나힐스</option>
+                            <option value='리앤리'>리앤리</option>
+                            <option value='마에스트로'>마에스트로</option>
+                            <option value='비에이비스타'>비에이비스타</option>
+                            <option value='신라'>신라</option>
+                            <option value='아세코밸리'>아세코밸리</option>
+                            <option value='안성H'>안성H</option>
+                            <option value='안성W'>안성W</option>
+                            <option value='에덴블루'>에덴블루</option>
+                            <option value='이천실크밸리'>이천실크밸리</option>
+                            <option value='캐슬파인'>캐슬파인</option>
+                            <option value='코리아'>코리아</option>
+                            <option value='코리아(P)'>코리아(P)</option>
+                            <option value='한림용인'>한림용인</option>
+                            <option value='해솔리아'>해솔리아</option>
+                        `;
+                    }
+                    else if (obj.value == "충청도") {
+                        document.getElementById("inputgn").innerHTML = `
+                            <option value='대영베이스'>대영베이스</option>
+                            <option value='대영힐스'>대영힐스</option>
+                            <option value='떼제베'>떼제베</option>
+                            <option value='로얄포레'>로얄포레</option>
+                            <option value='올데이'>올데이</option>
+                            <option value='임페리얼레이크'>임페리얼레이크</option>
+                            <option value='진천'>진천</option>
+                        `;
+                    }
+                    else if (obj.value == "강원도") {
+                        document.getElementById("inputgn").innerHTML = `
+                            <option value='벨라스톤'>벨라스톤</option>
+                            <option value='센추리21'>센추리21</option>
+                            <option value='알펜시아'>알펜시아</option>
+                            <option value='클럽모우'>클럽모우</option>
+                            <option value='파가니카'>파가니카</option>
+                        `;
+                    }
+                    else {
+                        document.getElementById("inputgn").innerHTML = `
+                            <option value='none'>아직 안정함</option>
+                         `;
+                    }
+                }
+            </script>
+            
+            <select id="inputrg" class="form-select" name="brg" required onchange="select_gu(this);" style="width:300px;">
+                <option value="{{b.rg}}" disabled>{{b.rg}}</option>
+                <option value="경기북부">경기북부</option>
+                <option value="경기남부">경기남부</option>
+                <option value="충청도">충청도</option>
+                <option value="강원도">강원도</option>
+            </select>
+        </div>
+        <div class="col-md-7">
+            <label for="inputgn" class="form-label">골프장</label>
+            <select id="inputgn" class="form-select" name="bgn" style="width:300px;">
+                <option value="{{b.gn}}">{{b.gn}}</option>
+            </select>
+        </div>
+        <div class="col-md-5">
+        <label class="form-label">날짜</label>
+        <br>    
+        <input type="date" class = "form-control" name = "bcdate" value="{{b.date|date:'Y-m-d'}}" style="width:300px;">
+        </div>
+        <div class="col-md-7">
+            <label class="form-label">코스</label>
+            <input class="form-control " name="bcourse" placeholder="INPUT COURSE" value="{{b.course}}" style="width:300px;">
+        </div>
+        <div class="col-md-5">
+            <label class="form-label">시간</label>
+            <input class="form-control " name="bhour" placeholder="HH" value="{{b.hour}}" style="width:300px;" >
+        </div>
+        <div class="col-md-7">
+            <label class="form-label">시/분</label>
+            <input class="form-control " name="bmin" placeholder="MM" value="{{b.min}}" style="width:300px;">
+        </div>
+        <div class="col-md-5">
+            <label class="form-label">그린피</label>
+            <input class="form-control " name="bpee" placeholder="INPUT PEE" value="{{b.pee}}" style="width:300px;">
+        </div>
+        <div class="col-md-7">
+            <label class="form-label">예약자명</label>
+            <input class="form-control " name="bbname" placeholder="INPUT NAME" value="{{b.bname}}" style="width:300px;">
+        </div>
+        <div class="col-md-9">
+            <label class="form-label">조건</label>
+            <select class="form-select" name="brq"  style="width:300px;">
+                <option value="{{b.rq}}" disabled>{{b.rq}}</option>
+                <option value="조건없음">조건없음</option>
+                <option value="남여만">남여만</option>
+                <option value="남자만">남자만</option>
+                <option value="여자만">여자만</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">메모</label>
+            <input class="form-control " name="bmemo" value="{{b.memo}}" placeholder="INPUT MEMO">
+        </div>
+
+    <div class="text-end mt-4">
+        <button class="btn btn-dark">수정하기</button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            삭제하기
+          </button>
+        </form>
+          
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">타임 삭제</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              정말 삭제하시겠습니까?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-dark" data-bs-dismiss="modal">닫기</button>
+              <form method = "post" action="{%url 'board:tcancle' b.id%}">
+                {% csrf_token %}
+              <button name="tcancle" class="btn btn-danger">삭제하기</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+{% endblock %}

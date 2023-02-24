@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block con %}
+{% load mathfilters %}
+
+<style>
+ .interval-cell {
+       width: 80px;
+    }
+
+    .table {
+        text-align: center;
+    }
+</style>
+
+<h1><b>예약 현황</b></h1>
+
+<table border = "1" class="table table-hover table-bordered border-dark table align-middle mt-4">
+    <thead>
+        <tr class="table-dark">
+            <th scope="col">작성자</th>
+            <th scope="col">골드장</th>
+            <th scope="col">예약일</th>
+            <th scope="col">코스</th>
+            <th scope="col">타임</th>
+            <th scope="col">예약자명</th>
+            <th scope="col">그린피</th>
+            <th scope="col">조인인원</th>
+            <th scope="col">조건</th>
+            <th scope="col">메모</th>
+            <th scope="col" colspan="4" id="dynamic-col">조인현황</th>
+        </tr>
+    </thead>
+    <tbody id="table">
+        {% for i in bset %}
+            <tr>
+                <th scope="row">{{ i.writer }} {{i.writer.rank}}</td>
+                <td>{{ i.gn }}</td>
+                <td class="date-format">{{ i.date|date:"m/d(D)"}}</td>
+                <td>{{ i.course }}</td>
+                <td>{{ i.hour }}:{{ i.min }}</td>
+                <td>{{ i.bname }}</td>
+                <td>{{ i.pee }}</td>
+                <td>{{ i.join_count }}명</td>
+                <td>{{ i.rq }}</td>
+                <td>{{ i.memo }}</td>
+                
+                {% for j in p %}
+                    {% if j.board.id == i.id %}
+                        <td class='interval-cell'>{{ j.j_name }}({{ j.j_tag }})</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% empty %}
+            <tr class="text-center">
+                <th colspan="13"><h4>{% if kw %} 검색결과가 존재하지 않습니다 {% else %} 타임이 존재하지 않습니다 💦 {% endif %}</h4></th>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+
+    var longest = 0;
+
+    for (i=0;i<document.getElementById('table').rows.length;i++) {
+        if (document.getElementById('table').rows[i].cells.length > longest ) {
+            longest = document.getElementById('table').rows[i].cells.length;
+        }
+    }
+
+    if (longest > 14) {
+        $("#dynamic-col").attr("colspan", longest-10);
+        for (i=0;i<document.getElementById('table').rows.length;i++) {
+            for (j=document.getElementById('table').rows[i].cells.length;j<longest;j++) {
+                var objCell = document.getElementById('table').rows[i].insertCell(j);
+                objCell.className = "interval-cell";
+            }
+        }
+    } else {
+        for (i=0;i<document.getElementById('table').rows.length;i++) {
+            for (j=document.getElementById('table').rows[i].cells.length;j<14;j++) {
+
+                var objCell = document.getElementById('table').rows[i].insertCell(j);
+                objCell.className = "interval-cell";
+
+            }
+        }
+    }
+
+    for (i=0;i<document.getElementsByClassName('date-format').length;i++) {
+        let x = document.getElementsByClassName("date-format")[i];
+        x.innerText=x.innerText.substr(0, 7) + x.innerText.substr(9, 9); 
+    }
+
+</script>
+{% endblock %}

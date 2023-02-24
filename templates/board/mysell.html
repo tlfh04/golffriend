@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block con %}
+{% load mathfilters %}
+
+
+<style>
+   .interval-cell {
+       width: 80px;
+    }
+
+    .table {
+        text-align: center;
+    }
+</style>
+
+<h1><b>나의 판매 현황</b></h1>
+<h3><b>이번 달 수수료: {{ salaryRecord.price }} 이번달 명수 :  {{ salaryRecord.join_count }}</b></h3>
+
+
+<table class="table table-hover table-bordered border-dark table align-middle mt-4">
+    <thead>
+        <tr class="table-dark">
+            <th scope="col">골드장</th>
+            <th scope="col">예약일</th>
+            <th scope="col">코스</th>
+            <th scope="col">타임</th>
+            <th scope="col">예약자명</th>
+            <th scope="col">그린피</th>
+            <th scope="col">조인인원</th>
+            <th scope="col">조건</th>
+            <th scope="col">메모</th>
+            <th scope="col">진행상황</th>
+            <th scope="col">판매</th>
+            <th scope="col" colspan="4" id="dynamic-col">조인현황</th>
+        </tr>
+    </thead>
+    <tbody id="table">
+        {% for j in p %}
+            <tr>
+                <th scope="row">{{ j.board.gn }}</td>
+                <td class="date-format">{{ j.board.date|date:"m/d(D)"}}</td>
+                <td>{{ j.board.course }}</td>
+                <td>{{ j.board.hour }}:{{ j.board.min }}</td>
+                <td>{{ j.board.bname }}</td>
+                <td>{{ j.board.pee }}</td>
+                <td>{{ j.join_count }}명</td>
+                <td>{{ j.board.rq }}</td>
+                <td>{{ j.board.memo }}</td>
+
+                <!-- 진행상황 -->
+                {% if j.deposit_status == False %}
+                    <td>미입금</td>
+                {% else %}
+                    <td>입금 확인</td>
+                {% endif %}
+
+                <!-- 판매 -->
+                {% if j.deposit_status == False %}
+                    {% if j.deposit_request == False %}
+                        <td><button onclick="depositSubmit('{{j.id}}')" class="btn btn-dark">입금요청</button></td>
+                    {% else %}
+                        <td><button onclick="depositSubmit('{{j.id}}')" class="btn btn-dark">입금요청취소</button></td>
+                    {% endif %}
+                {% else %}
+                {% if j.refund_request == False %}
+                <td><button onclick="requestRefund('{{j.id}}')" class="btn btn-dark" >환불요청</button></td>
+                {% else %}
+                <td><button onclick="requestRefund('{{j.id}}')" class="btn btn-dark" disabled>환불요청</button></td>
+
+                {% endif %}
+                {% endif %}
+                
+                    {% if user == j.j_writer %}
+                        <td class='interval-cell'>{{ j.j_name }}({{ j.j_tag }})</td>
+                    {% endif %}
+            </tr>
+        {% empty %}
+            <tr class="text-center">
+                <th colspan="1">{% if kw %} 검색결과가 존재하지 않습니다 {% else %} 타임이 존재하지 않습니다 💦 {% endif %}</th>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+
+    for (i=0;i<document.getElementsByClassName('date-format').length;i++) {
+        let x = document.getElementsByClassName("date-format")[i];
+        x.innerText=x.innerText.substr(0, 7) + x.innerText.substr(9, 9); 
+    }
+
+
+    function depositSubmit(joinookId) {
+        $.ajax({
+            url: "{% url 'board:requestDeposit' %}",
+            type:'POST',
+            data:{'joinookId':joinookId,csrfmiddlewaretoken: '{{ csrf_token }}'},
+            success:function(response){
+                console.log(response.message);
+                if (response.message == 'true') {
+                    alert("입금요청이 완료되었습니다.") //등록 알림
+                } else {
+                    alert("입금요청이 취소되었습니다.")
+                }
+                location.reload();
+            },
+            error:function(response){
+            }
+        });
+    
+	}
+
+    function requestRefund(joinookId) {
+        $.ajax({
+            url: "{% url 'board:requestRefund' %}",
+            type:'POST',
+            data:{'joinookId':joinookId,csrfmiddlewaretoken: '{{ csrf_token }}'},
+            success:function(response){
+                console.log(response.message);
+                alert("환불요청이 완료되었습니다.")
+                location.reload();
+            },
+            error:function(response){
+            }
+        });
+    
+	}
+
+</script>
+{% endblock %}
